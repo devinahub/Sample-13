@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Valentine Challenge 💜</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #E0B0FF; /* Lilac */
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        #gameCard {
+            background: white;
+            padding: 40px 20px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 85%;
+            max-width: 350px;
+            position: relative;
+        }
+
+        h1 { color: #8A2BE2; font-size: 1.8rem; margin-bottom: 30px; }
+
+        .btn-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            min-height: 100px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #yesBtn {
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            color: white;
+            z-index: 10;
+        }
+
+        #noBtn {
+            background: #FF4444;
+            color: white;
+            position: absolute; /* Allows for the jumping effect */
+        }
+
+        /* FINAL REVEAL STYLING */
+        #finalReveal {
+            display: none;
+        }
+
+        .gold-card {
+            border: 3px solid #D4AF37;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+
+        .shimmer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #B8860B, #D4AF37, #B8860B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="gameCard">
+        <div id="questionArea">
+            <div style="font-size: 4rem; margin-bottom: 10px;">🧸</div>
+            <h1>Will you be my Valentine?</h1>
+            <div class="btn-wrap">
+                <button id="yesBtn" onclick="handleWin()">YES</button>
+                <button id="noBtn" onmouseover="escape()" ontouchstart="escape()">NO</button>
+            </div>
+        </div>
+
+        <div id="finalReveal">
+            <div style="font-size: 4rem;">🥳</div>
+            <div class="gold-card">
+                <span class="shimmer">IT'S A DATE!</span>
+                <p style="font-size: 1.2rem; color: #444;">
+                    Can't wait to see you... <br>
+                    <strong>📅 February 14th <br>
+                    ⏰ 7:00 PM</strong>
+                </p>
+            </div>
+            <button onclick="sendConfirmation()" style="background:#25D366; color:white; margin-top:20px; border-radius:10px; padding:10px 20px;">Send Confirmation 💬</button>
+        </div>
+    </div>
+
+    <script>
+        // THE JUMPING LOGIC
+        function escape() {
+            const noBtn = document.getElementById('noBtn');
+            // Move button to random spot within the whole screen
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = "fixed";
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        // THE WINNING LOGIC
+        function handleWin() {
+            // 1. Hide Question, Show Reveal
+            document.getElementById('questionArea').style.display = 'none';
+            document.getElementById('finalReveal').style.display = 'block';
+
+            // 2. Trigger Confetti
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+              confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#D4AF37', #E0B0FF', '#ffffff']
+              });
+              confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#D4AF37', '#E0B0FF', '#ffffff']
+              });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+        }
+
+        function sendConfirmation() {
+            const phone = "233535596911"; // Replace with customer number
+            const msg = "I said YES! See you at 7 PM on Valentine's Day! 🥰💜";
+            window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(msg), '_blank');
+        }
+    </script>
+</body>
+</html>
